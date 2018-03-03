@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间 -->
+<mapper namespace="com.OrderMapper">
+        <!--id对应查询resultmap  type类型-->
+    <resultMap  type="order" id="orderResultMap">
+        <!--实体类名，  column 数据库名-->
+        <id property="id" column="id" />
+        <!--定义普通属性-->
+        <result property="userId" column="user_id"/>
+
+    </resultMap>
+    <select id="queryOrderAll"  resultMap="orderResultMap">
+        select
+        id,user_id,number,createtime,note
+        from  orders
+    </select>
+
+
+
+
+</mapper>

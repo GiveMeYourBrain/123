@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 命名空间 -->
+<mapper namespace="test">
+    <!-- 查询用户 通过Id
+    id: statementId
+    parameterMap : 已经废除
+    parameterType ： 传入 的参数的类型   Mybatis 封装了 Integer 别名   java.lang.Integer  对应的别名Integer
+    resultType : 返回值参数的类型    自动映射
+    resultMap :  返回值参数的类型    手动映射
+    ? : #{}  占位符           输入参数的类型必须是基本类型时      #{随意写}     POJO #{POJO中属性名}
+     -->
+    <select id="findUserById" parameterType="Integer" resultType="com.User">
+        select * from user where id = #{vvv}
+    </select>
+
+
+    <select id="findUserLikeByName" parameterType="String" resultType="com.User">
+        SELECT * from user Where username like '%${value}%'
+    </select>
+
+    <!-- selectKey 标签实现主键返回 -->
+    <!-- keyColumn:主键对应的表中的哪一列 -->
+    <!-- keyProperty：主键对应的pojo中的哪一个属性 -->
+    <!-- order：设置在执行insert语句前执行查询id的sql，孩纸在执行insert语句之后执行查询id的sql -->
+    <!-- resultType：设置返回的id的类型 -->
+    <insert id="SaveUser" parameterType="com.User">
+        <selectKey keyColumn="id" keyProperty="id" order="AFTER"
+                   resultType="int">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        <!-- <selectKey keyProperty="id" resultType="Integer" order="AFTER" >
+             SELECT last_insert_id()
+         </selectKey>-->
+        INSERT  INTO  user
+        (username,birthday,sex,address)
+        VALUES
+        (#{username},#{birthday},#{sex},#{address})
+    </insert>
+
+
+    <update id="updateById" parameterType="com.User" >
+        update user set
+        username=#{username},
+        sex=#{sex},
+        birthday=#{birthday},
+        address=#{address}
+        where id=#{id}
+    </update>
+
+    <delete id="deleteById" parameterType="Integer">
+        delete from user where id=#{vvv}
+    </delete>
+</mapper>
